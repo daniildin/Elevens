@@ -1,0 +1,7 @@
+C:\Users\danie\source\repos\ElevensGame\ElevensGame\bin\Debug\ElevensGame.exe.config
+C:\Users\danie\source\repos\ElevensGame\ElevensGame\bin\Debug\ElevensGame.exe
+C:\Users\danie\source\repos\ElevensGame\ElevensGame\bin\Debug\ElevensGame.pdb
+C:\Users\danie\source\repos\ElevensGame\ElevensGame\obj\Debug\ElevensGame.csproj.AssemblyReference.cache
+C:\Users\danie\source\repos\ElevensGame\ElevensGame\obj\Debug\ElevensGame.csproj.CoreCompileInputs.cache
+C:\Users\danie\source\repos\ElevensGame\ElevensGame\obj\Debug\ElevensGame.exe
+C:\Users\danie\source\repos\ElevensGame\ElevensGame\obj\Debug\ElevensGame.pdb
