@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Elevens
     {
@@ -56,13 +57,15 @@
         {
             if (ValidateReplace())
             {
+                var indices = SelectedCards.Select(card => Board.TableCards.IndexOf(card)).ToList();
                 foreach (var card in SelectedCards)
                 {
                     Board.TableCards.Remove(card);
-                    Board.ReplaceCards(Board.TableCards.IndexOf(card), Board.TableCards.IndexOf(card));
                 }
+                Board.ReplaceCards(indices[0], indices[1], indices.Count > 2 ? indices[2] : -1);
             }
         }
+
 
         public void OnRestart()
         {

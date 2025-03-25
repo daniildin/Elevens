@@ -30,10 +30,18 @@
 
         public Card DrawCard()
         {
-            if (Cards.Count == 0) return null;
-            Card drawnCard = Cards[0];
-            Cards.RemoveAt(0);
-            return drawnCard;
+            if (Cards.Count > 0)
+            {
+                Card drawnCard = Cards[0];
+                Cards.RemoveAt(0);
+                return drawnCard;
+            }
+            else
+            {
+                Console.WriteLine("Deck is empty.");
+                return null; 
+            }
         }
+
     }
 }
