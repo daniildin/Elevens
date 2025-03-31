@@ -76,26 +76,19 @@ This project is open-source and available under the MIT License. See the [LICENS
 
 ### First Update
 
-In this version of the Elevens Solitaire game, I’ve made several improvements to enhance the gameplay experience and ensure a smooth, error-free game loop. Below are the key updates:
-
 ## Game Loop
-
 I’ve added a loop to allow the user to play the game repeatedly without needing to restart the application. This makes the game more user-friendly since players can choose whether they want to play again after finishing a round. The game automatically resets for a new session when the player chooses to play again.
 
 ## Game Display
-
 The `DisplayBoard` function prints the current state of the board, showing the cards that are currently on the table. This is a key feature for providing feedback to the player, allowing them to clearly see the current game setup and make informed choices.
 
 ## Input Validation
-
 To ensure the game runs smoothly, I’ve implemented the `IsValidSelection` function. This checks the user’s input for selecting cards, ensuring that the cards they choose form a valid set. By validating the input before proceeding, this reduces the chances of errors or invalid moves, which keeps the game flowing without interruption.
 
 ## Card Replacement
-
 In the `ReplaceCards` method, I’ve added a check to make sure the indices provided for replacing cards are valid. This prevents any errors related to incorrect card positions and ensures that only valid moves are made. The game will prompt the player to make a valid move if the indices are incorrect.
 
 ## Endgame Conditions
-
 Finally, I’ve implemented an endgame check that determines when the game should end. If no valid moves are remaining, the game will end automatically, giving the player a satisfying conclusion. This ensures that the game doesn’t drag on indefinitely and wraps up in a meaningful way.
 
 ### Final Update
