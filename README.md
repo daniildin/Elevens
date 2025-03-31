@@ -118,7 +118,7 @@ Finally, I’ve implemented an endgame check that determines when the game shoul
    dotnet run
    ```
 
-## Challenges and Solutions (Extra Credit)
+## Challenges and Solutions 
 ### Challenge 1: Invalid Move Handling
 **Problem:** The game was incorrectly replacing invalid card selections.  
 **Solution:** Improved `ValidateReplace()` to give clearer error messages and reject bad input.
