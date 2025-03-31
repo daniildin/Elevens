@@ -1,108 +1,107 @@
 ﻿namespace ElevensGame
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
     using ElevensGameModels;
 
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            Elevens elevens = new Elevens();
-            bool playing = true;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            while (playing)
-            {
-                elevens.SetUp();
-                Console.Clear();
-                Console.WriteLine("Welcome to Elevens Solitaire!");
-                PlayGame(elevens);
-
-                Console.WriteLine("Do you want to play again? (Y/N)");
-                playing = Console.ReadLine().Trim().ToUpper() == "Y";
-            }
-        }
-
-        static void DisplayBoard(Elevens elevens)
-        {
-            Console.WriteLine("\nCurrent Board:");
-            for (int i = 0; i < elevens.Board.TableCards.Count; i++)
-            {
-                var card = elevens.Board.TableCards[i];
-                Console.WriteLine($"{i + 1}: {card.Rank} of {card.Suit}");
-            }
-        }
-
-        static bool IsValidSelection(int[] indexes, Elevens elevens)
-        {
-            // Check that the selection has two or three valid indexes.
-            if (indexes.Length != 2 && indexes.Length != 3)
-            {
-                Console.WriteLine("You must select exactly two or three cards.");
-                return false;
-            }
-
-            // Validate that all indexes are within the correct range.
-            foreach (int index in indexes)
-            {
-                if (index < 0 || index >= elevens.Board.TableCards.Count)
-                {
-                    Console.WriteLine("Invalid card number. Please select a valid card.");
-                    return false;
-                }
-            }
-
-         
-            return true;
-        }
-
-        static void PlayGame(Elevens elevens)
-        {
             while (true)
             {
-                DisplayBoard(elevens);
-                Console.WriteLine("Select two or three cards (e.g., 1 2 3) or type 'Q' to quit:");
-                string input = Console.ReadLine().Trim();
+                var card = new ElevensGameModels.Card(ElevensGameModels.Suit.Hearts, ElevensGameModels.Rank.Ace);
+                Console.WriteLine(card.ToString());
+                Elevens game = new Elevens();
+                game.SetUp();
 
-                if (input.ToUpper() == "Q") break;
-
-                // Parse the input into indexes
-                int[] selectedIndexes = input.Split(' ')
-                                              .Select(s => int.TryParse(s, out int index) ? index - 1 : -1)
-                                              .ToArray();
-
-                // Validate the selection before proceeding.
-                if (!IsValidSelection(selectedIndexes, elevens)) continue;
-
-                // Clear previous selections
-                elevens.SelectedCards.Clear();
-
-                // Add the selected cards
-                foreach (int index in selectedIndexes)
+                while (true)
                 {
-                    elevens.SelectCard(elevens.Board.TableCards[index]);
+                    DisplayBoard(game);
+
+                    if (!game.ValidMoveRemaining())
+                    {
+                        Console.WriteLine("No valid moves left! You lose.");
+                        game.OnLose();
+                        break;
+                    }
+
+                    Console.Write("Select card indices (comma-separated) or 'q' to quit: ");
+                    string input = Console.ReadLine();
+
+                    if (input.Trim().ToLower() == "q")
+                    {
+                        Console.Write("Do you want to restart the game? (y/n): ");
+                        string restartInput = Console.ReadLine();
+                        if (restartInput.Trim().ToLower() == "y")
+                        {
+                            break; // Break the inner loop to restart the game
+                        }
+                        else
+                        {
+                            Console.WriteLine("Quitting the game. Goodbye!");
+                            return; // Exit the application
+                        }
+                    }
+
+                    var indices = ParseIndices(input, game.Board.TableCards.Count);
+
+                    if (indices.Count == 2 || indices.Count == 3)
+                    {
+                        game.SelectedCards.Clear();
+                        foreach (var index in indices)
+                        {
+                            game.SelectCard(game.Board.TableCards[index]);
+                        }
+
+                        if (game.ValidateReplace())
+                        {
+                            game.OnReplace();
+                            Console.WriteLine("Cards replaced successfully! Board updated.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid selection. The selected cards do not meet the game's rules. Try again.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please select exactly 2 or 3 valid card indices.");
+                    }
                 }
+            }
+        }
 
-                // Perform the replacement if valid
-                if (elevens.ValidateReplace())
+        static void DisplayBoard(Elevens game)
+        {
+            Console.WriteLine("\nCurrent Board:");
+            for (int i = 0; i < game.Board.TableCards.Count; i++)
+            {
+                var card = game.Board.TableCards[i];
+                Console.WriteLine($"[{i + 1}] {card}");
+            }
+            Console.WriteLine($"Cards left in deck: {game.Board.Deck.CardsRemaining()}");
+        }
+
+        static List<int> ParseIndices(string input, int maxIndex)
+        {
+            var indices = new List<int>();
+            var parts = input.Split(',');
+            foreach (var part in parts)
+            {
+                if (int.TryParse(part.Trim(), out int index) && index > 0 && index <= maxIndex)
                 {
-                    elevens.OnReplace();
-                    Console.WriteLine("Cards replaced successfully!");
+                    indices.Add(index - 1);
                 }
                 else
                 {
-                    Console.WriteLine("Invalid move. The selected cards don't meet the criteria for a valid move.");
-                }
-
-                // Check for win condition
-                if (!elevens.ValidMoveRemaining())
-                {
-                    Console.WriteLine("No more valid moves.");
-                    elevens.OnWin();
-                    break;
+                    Console.WriteLine("Invalid index detected. Please enter valid card numbers.");
+                    return new List<int>();
                 }
             }
+            return indices;
         }
     }
 }
-

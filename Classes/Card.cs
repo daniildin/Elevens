@@ -15,5 +15,29 @@
             Suit = suit;
             Rank = rank;
         }
+
+        public override string ToString()
+        {
+            string suitSymbol;
+            switch (Suit)
+            {
+                case Suit.Hearts:
+                    suitSymbol = "♥";
+                    break;
+                case Suit.Diamonds:
+                    suitSymbol = "♦";
+                    break;
+                case Suit.Clubs:
+                    suitSymbol = "♣";
+                    break;
+                case Suit.Spades:
+                    suitSymbol = "♠";
+                    break;
+                default:
+                    suitSymbol = "?";
+                    break;
+            }
+            return $"[{Rank} {suitSymbol}]";
+        }
     }
 }

@@ -19,11 +19,12 @@
         public void SetUp()
         {
             Board.SetUpBoard();
+            SelectedCards.Clear();
         }
 
         public void SelectCard(Card card)
         {
-            if (SelectedCards.Count < 3)
+            if (SelectedCards.Count < 3 && !SelectedCards.Contains(card))
                 SelectedCards.Add(card);
         }
 
@@ -36,21 +37,20 @@
         {
             if (SelectedCards.Count == 2)
             {
-                var sum = SelectedCards[0].Value + SelectedCards[1].Value;
-                return sum == 11;
+                return SelectedCards[0].Value + SelectedCards[1].Value == 11;
             }
             else if (SelectedCards.Count == 3)
             {
-                return SelectedCards.Exists(c => c.Rank == Rank.Jack) &&
-                       SelectedCards.Exists(c => c.Rank == Rank.Queen) &&
-                       SelectedCards.Exists(c => c.Rank == Rank.King);
+                return SelectedCards.Any(c => c.Rank == Rank.Jack) &&
+                       SelectedCards.Any(c => c.Rank == Rank.Queen) &&
+                       SelectedCards.Any(c => c.Rank == Rank.King);
             }
             return false;
         }
 
         public bool ValidMoveRemaining()
         {
-            return SelectedCards.Count > 0;
+            return Board.HasValidMove();
         }
 
         public void OnReplace()
@@ -63,9 +63,9 @@
                     Board.TableCards.Remove(card);
                 }
                 Board.ReplaceCards(indices[0], indices[1], indices.Count > 2 ? indices[2] : -1);
+                SelectedCards.Clear();
             }
         }
-
 
         public void OnRestart()
         {

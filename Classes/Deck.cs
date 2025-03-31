@@ -9,6 +9,7 @@
 
         public void CreateDeck()
         {
+            Cards.Clear();
             foreach (Suit suit in Enum.GetValues(typeof(Suit)))
             {
                 foreach (Rank rank in Enum.GetValues(typeof(Rank)))
@@ -36,12 +37,14 @@
                 Cards.RemoveAt(0);
                 return drawnCard;
             }
-            else
-            {
-                Console.WriteLine("Deck is empty.");
-                return null; 
-            }
+            Console.WriteLine("Deck is empty.");
+            return null;
         }
 
+        public int CardsRemaining()
+        {
+            return Cards.Count;
+        }
     }
 }
+
